@@ -46,10 +46,15 @@ public class Chesse {
     public void run() {
         while (countOfMoves < finalMoves && !Moves.validMoves.isEmpty()) {
             Moves.ResultPair move = choosePossibleMove();
-            if (move == null) break;
-
-            System.out.println("Move : " + move);
-            System.out.println("ount : " + countOfMoves);
+            if (move == null) {
+                break;
+            }
+            /*if (move equals(moveHistory){
+                //vrattit se na prethodni poyici;
+            }
+*/
+            //System.out.println("Move : " + move);
+            //System.out.println("ount : " + countOfMoves);
 
             Moves.AllPossibleMoves(new int[]{move.getX(), move.getY()});
         }

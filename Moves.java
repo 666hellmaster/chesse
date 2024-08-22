@@ -91,13 +91,13 @@ public class Moves {
     public static List<ResultPair> validMoves = new ArrayList<>();
 
     public static void AllPossibleMoves(int[] startHorse) {
-        validMoves.clear();
+        validMoves.clear(); //clear all previous moves
         for (Direction direction : Direction.values()) {
             ResultPair result = direction.apply(startHorse[0], startHorse[1]);
             if (result.getX() < 0 || result.getY() < 0 || result.getX() >= Chesse.size_board || result.getY() >= Chesse.size_board) {
                 continue;
             }
-            System.out.println(direction + ": " + result);
+            //System.out.println(direction + ": " + result); //print all possible moves
             validMoves.add(result);
         }
     }
