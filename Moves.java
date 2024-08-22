@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author ruzicka
  * @since 2024-08-22
@@ -85,12 +88,14 @@ public class Moves {
 
     //--------------------------------------------------------------------------------
     public static void printAllPossibleMoves(int[] start_horse) {
+        List<ResultPair> validMoves = new ArrayList<>();
         for (Direction direction : Direction.values()) {
             ResultPair result = direction.apply(start_horse[0], start_horse[1]);
             if (result.getX() < 0 || result.getY() < 0 || result.getX() > (Chesse.size_board - 1) || result.getY() > (Chesse.size_board - 1)) {
                 continue;
             }
             System.out.println(direction + ": " + result);
+            validMoves.add(result);
         }
     }
 }

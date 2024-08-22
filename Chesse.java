@@ -1,5 +1,6 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,8 +35,17 @@ public class Chesse {
         int[] start_horse = board.get("(5,5)");
         Moves.printAllPossibleMoves(start_horse);
     }
+    //--------------------------------------------------------------------------------
 
+    public static void choosePossibleMove(){
 
+    }
+
+    //--------------------------------------------------------------------------------
+    public static void saveMoves(){
+        List<String> savedMoves = new ArrayList<>();
+
+    }
     //--------------------------------------------------------------------------------
 
     public static void main(String[] args) {
