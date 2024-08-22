@@ -11,14 +11,14 @@ public class Chesse {
 
     //--------------------------------------------------------------------------------
 
+    static int size_board = 6;
+    static int final_moves = ((size_board * size_board) - 1);
+
     //--------------------------------------------------------------------------------
 
-    static int size_board = 6;
-
     public static void init() {
-        int final_moves = ((size_board * size_board) - 1);
 
-        System.out.println("final_moves: " + final_moves);
+        //System.out.println("final_moves: " + final_moves);
 
         Map<String, int[]> board = new HashMap<>();
 
@@ -35,24 +35,40 @@ public class Chesse {
         int[] start_horse = board.get("(0,0)");
         Moves.AllPossibleMoves(start_horse);
     }
+
     //--------------------------------------------------------------------------------
 
     static int countOfMoves = 0;
 
-    public static void choosePossibleMove(){
-        Moves.validMoves.getFirst();
+    public static Moves.ResultPair choosePossibleMove(){
         countOfMoves++;
+        Moves.ResultPair horsePosition = Moves.validMoves.getFirst();
+        return horsePosition;
     }
 
     //--------------------------------------------------------------------------------
-    public static void saveMoves(){
-        List<String> savedMoves = new ArrayList<>();
 
+    public static void saveMoves(){
+        List<Moves.ResultPair> savedMoves = new ArrayList<>();
+        savedMoves.add(Moves.validMoves.getFirst());
+        Moves.validMoves.removeFirst();
     }
+
+    //--------------------------------------------------------------------------------
+
+    public static void run(){
+        while (countOfMoves < final_moves){
+            choosePossibleMove();
+            saveMoves();
+            //System.out.println("position: " + Moves.ResultPair.toString());
+        }
+    }
+
     //--------------------------------------------------------------------------------
 
     public static void main(String[] args) {
         init();
+        run();
 
     }
 }
