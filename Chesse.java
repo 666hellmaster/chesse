@@ -32,13 +32,16 @@ public class Chesse {
             System.out.println(entry.getKey() + " = " + Arrays.toString(entry.getValue()));
         }*/
 
-        int[] start_horse = board.get("(5,5)");
-        Moves.printAllPossibleMoves(start_horse);
+        int[] start_horse = board.get("(0,0)");
+        Moves.AllPossibleMoves(start_horse);
     }
     //--------------------------------------------------------------------------------
 
-    public static void choosePossibleMove(){
+    static int countOfMoves = 0;
 
+    public static void choosePossibleMove(){
+        Moves.validMoves.getFirst();
+        countOfMoves++;
     }
 
     //--------------------------------------------------------------------------------
