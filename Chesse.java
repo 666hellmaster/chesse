@@ -9,19 +9,13 @@ import java.util.Map;
  */
 public class Chesse {
 
-    //--------------------------------------------------------------------------------
-
     static int size_board = 6;
-    static int final_moves = ((size_board * size_board) - 1);
+    static int finalMoves = (size_board * size_board) - 1;
+    public static List<Moves.ResultPair> moveHistory = new ArrayList<>();
+    public static int countOfMoves = 0;
 
-    //--------------------------------------------------------------------------------
-
-    public static void init() {
-
-        //System.out.println("final_moves: " + final_moves);
-
+    public void init() {
         Map<String, int[]> board = new HashMap<>();
-
         for (int i = 0; i < size_board; i++) {
             for (int j = 0; j < size_board; j++) {
                 String key = "(" + i + "," + j + ")";
@@ -38,37 +32,34 @@ public class Chesse {
 
     //--------------------------------------------------------------------------------
 
-    static int countOfMoves = 0;
 
     public static Moves.ResultPair choosePossibleMove(){
         countOfMoves++;
-        Moves.ResultPair horsePosition = Moves.validMoves.getFirst();
-        return horsePosition;
+        if (!Moves.validMoves.isEmpty()) {
+            Moves.ResultPair horsePosition = Moves.validMoves.remove(0);
+            moveHistory.add(horsePosition);
+            return horsePosition;
+        }
+        return null;
     }
 
-    //--------------------------------------------------------------------------------
+    public void run() {
+        while (countOfMoves < finalMoves && !Moves.validMoves.isEmpty()) {
+            Moves.ResultPair move = choosePossibleMove();
+            if (move == null) break;
 
-    public static void saveMoves(){
-        List<Moves.ResultPair> savedMoves = new ArrayList<>();
-        savedMoves.add(Moves.validMoves.getFirst());
-        Moves.validMoves.removeFirst();
-    }
+            System.out.println("Move : " + move);
+            System.out.println("ount : " + countOfMoves);
 
-    //--------------------------------------------------------------------------------
-
-    public static void run(){
-        while (countOfMoves < final_moves){
-            choosePossibleMove();
-            saveMoves();
-            //System.out.println("position: " + Moves.ResultPair.toString());
+            Moves.AllPossibleMoves(new int[]{move.getX(), move.getY()});
         }
     }
 
     //--------------------------------------------------------------------------------
 
     public static void main(String[] args) {
-        init();
-        run();
-
+        Chesse chesse = new Chesse();
+        chesse.init();
+        chesse.run();
     }
 }
