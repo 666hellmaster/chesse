@@ -82,4 +82,15 @@ public class Moves {
 
         public abstract ResultPair apply(int x, int y);
     }
+
+    //--------------------------------------------------------------------------------
+    public static void printAllPossibleMoves(int[] start_horse) {
+        for (Direction direction : Direction.values()) {
+            ResultPair result = direction.apply(start_horse[0], start_horse[1]);
+            if (result.getX() < 0 || result.getY() < 0) {
+                continue;
+            }
+            System.out.println(direction + ": " + result);
+        }
+    }
 }
