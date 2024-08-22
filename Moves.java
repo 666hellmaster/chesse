@@ -87,7 +87,7 @@ public class Moves {
     public static void printAllPossibleMoves(int[] start_horse) {
         for (Direction direction : Direction.values()) {
             ResultPair result = direction.apply(start_horse[0], start_horse[1]);
-            if (result.getX() < 0 || result.getY() < 0) {
+            if (result.getX() < 0 || result.getY() < 0 || result.getX() > 5 || result.getY() > 5) {
                 continue;
             }
             System.out.println(direction + ": " + result);

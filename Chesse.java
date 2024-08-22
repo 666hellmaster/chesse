@@ -31,7 +31,7 @@ public class Chesse {
             System.out.println(entry.getKey() + " = " + Arrays.toString(entry.getValue()));
         }
         */
-        int[] start_horse = board.get("(0,0)");
+        int[] start_horse = board.get("(5,5)");
         Moves.printAllPossibleMoves(start_horse);
     }
 
