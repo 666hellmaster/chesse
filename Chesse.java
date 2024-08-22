@@ -27,10 +27,10 @@ public class Chesse {
                 board.put(key, new int[]{i, j});
             }
         }
-       /* for (Map.Entry<String, int[]> entry : board.entrySet()) {
+        /*for (Map.Entry<String, int[]> entry : board.entrySet()) {
             System.out.println(entry.getKey() + " = " + Arrays.toString(entry.getValue()));
-        }
-        */
+        }*/
+
         int[] start_horse = board.get("(5,5)");
         Moves.printAllPossibleMoves(start_horse);
     }
