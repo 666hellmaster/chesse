@@ -36,7 +36,7 @@ public class Chesse {
     public static Moves.ResultPair choosePossibleMove(){
         countOfMoves++;
         if (!Moves.validMoves.isEmpty()) {
-            Moves.ResultPair horsePosition = Moves.validMoves.remove(0);
+            Moves.ResultPair horsePosition = Moves.validMoves.removeFirst();
             moveHistory.add(horsePosition);
             return horsePosition;
         }
@@ -49,11 +49,12 @@ public class Chesse {
             if (move == null) {
                 break;
             }
-            /*if (move equals(moveHistory){
+            if (moveHistory.contains(move)) {
+                choosePossibleMove();
                 //vrattit se na prethodni poyici;
             }
-*/
-            //System.out.println("Move : " + move);
+
+            System.out.println("Move : " + move);
             //System.out.println("ount : " + countOfMoves);
 
             Moves.AllPossibleMoves(new int[]{move.getX(), move.getY()});
