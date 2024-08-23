@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author ruzicka
@@ -22,9 +24,6 @@ public class Chesse {
                 board.put(key, new int[]{i, j});
             }
         }
-        /*for (Map.Entry<String, int[]> entry : board.entrySet()) {
-            System.out.println(entry.getKey() + " = " + Arrays.toString(entry.getValue()));
-        }*/
 
         int[] start_horse = board.get("(0,0)");
         Moves.AllPossibleMoves(start_horse);
@@ -34,30 +33,32 @@ public class Chesse {
 
 
     public static Moves.ResultPair choosePossibleMove(){
-        countOfMoves++;
-        if (!Moves.validMoves.isEmpty()) {
-            Moves.ResultPair horsePosition = Moves.validMoves.removeFirst();
-            moveHistory.add(horsePosition);
-            return horsePosition;
+        for (Moves.ResultPair move : Moves.validMoves){
+            if (!moveHistory.contains(move)){
+                /*Moves.ResultPair horsePosition = Moves.validMoves.removeFirst();
+                return horsePosition;*/
+               return move;
+            }
         }
         return null;
     }
 
     public void run() {
+        Set<Moves.ResultPair> usedMoves = new HashSet<>();
+
         while (countOfMoves < finalMoves && !Moves.validMoves.isEmpty()) {
             Moves.ResultPair move = choosePossibleMove();
-            if (move == null) {
+            if (move == null|| usedMoves.contains(move)){
                 break;
             }
-            if (moveHistory.contains(move)) {
-                choosePossibleMove();
-                //vrattit se na prethodni poyici;
-            }
+
+            moveHistory.add(move);
+            countOfMoves++;
+            usedMoves.add(move);
 
             System.out.println("Move : " + move);
-            //System.out.println("ount : " + countOfMoves);
+            System.out.println("ount : " + countOfMoves);
 
-            Moves.AllPossibleMoves(new int[]{move.getX(), move.getY()});
         }
     }
 
