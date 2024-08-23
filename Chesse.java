@@ -44,21 +44,19 @@ public class Chesse {
     }
 
     public void run() {
-        Set<Moves.ResultPair> usedMoves = new HashSet<>();
 
         while (countOfMoves < finalMoves && !Moves.validMoves.isEmpty()) {
             Moves.ResultPair move = choosePossibleMove();
-            if (move == null|| usedMoves.contains(move)){
+            if (move == null){
                 break;
             }
 
             moveHistory.add(move);
             countOfMoves++;
-            usedMoves.add(move);
 
             System.out.println("Move : " + move);
             System.out.println("ount : " + countOfMoves);
-
+            Moves.AllPossibleMoves(new int[]{move.getX(), move.getY()});
         }
     }
 
