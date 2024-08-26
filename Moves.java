@@ -8,11 +8,11 @@ import java.util.List;
 public class Moves {
     //--------------------------------------------------------------------------------
 
-    public static class ResultPair {
+    public static class Field {
         private final int x;
         private final int y;
 
-        public ResultPair(int x, int y) {
+        public Field(int x, int y) {
             this.x = x;
             this.y = y;
         }
@@ -33,72 +33,101 @@ public class Moves {
 
     //--------------------------------------------------------------------------------
 
-    public enum Direction {
-        UP_LEFT {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x - 1, y + 2);
-            }
-        },
-        UP_RIGHT {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x + 1, y + 2);
-            }
-        },
-        RIGHT_UP {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x + 2, y + 1);
-            }
-        },
-        RIGHT_DOWN {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x + 2, y - 1);
-            }
-        },
-        DOWN_LEFT {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x - 1, y - 2);
-            }
-        },
-        DOWN_RIGHT {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x + 1, y - 2);
-            }
-        },
-        LEFT_UP {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x - 2, y + 1);
-            }
-        },
-        LEFT_DOWN {
-            @Override
-            public ResultPair apply(int x, int y) {
-                return new ResultPair(x - 2, y - 1);
-            }
-        };
+    public static class Move {
+        private final Field sourceField;
+        private final Field destField;
 
-        public abstract ResultPair apply(int x, int y);
+        public Move(Field sourceField, Field destField) {
+            this.sourceField = sourceField;
+            this.destField = destField;
+        }
+
+        public Field getSourceField() {
+            return sourceField;
+        }
+
+        public Field getDestField() {
+            return destField;
+        }
+
+        @Override
+        public String toString() {
+            return "Move{" +
+                    "sourceField=" + sourceField +
+                    ", destField=" + destField +
+                    '}';
+        }
     }
 
     //--------------------------------------------------------------------------------
 
-    public static List<ResultPair> validMoves = new ArrayList<>();
+    public enum Direction {
+        UP_LEFT {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() - 1, field.getY() + 2);
+            }
+        },
+        UP_RIGHT {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() + 1, field.getY() + 2);
+            }
+        },
+        RIGHT_UP {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() + 2, field.getY() + 1);
+            }
+        },
+        RIGHT_DOWN {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() + 2, field.getY() - 1);
+            }
+        },
+        DOWN_LEFT {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() - 1, field.getY() - 2);
+            }
+        },
+        DOWN_RIGHT {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() + 1, field.getY() - 2);
+            }
+        },
+        LEFT_UP {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() - 2, field.getY() + 1);
+            }
+        },
+        LEFT_DOWN {
+            @Override
+            public Field apply(Field field) {
+                return new Field(field.getX() - 2, field.getY() - 1);
+            }
+        };
 
-    public static void AllPossibleMoves(int[] startHorse) {
+        public abstract Field apply(Field field);
+    }
+
+    //--------------------------------------------------------------------------------
+
+    public static List<Move> validMoves = new ArrayList<>();
+
+    public static void AllPossibleMoves(Field startHorse) {
         validMoves.clear(); //clear all previous moves
         for (Direction direction : Direction.values()) {
-            ResultPair result = direction.apply(startHorse[0], startHorse[1]);
-            if (result.getX() < 0 || result.getY() < 0 || result.getX() >= Chesse.size_board || result.getY() >= Chesse.size_board) {
+            Field destination = direction.apply(startHorse);
+            if (destination.getX() < 0 || destination.getY() < 0 || destination.getX() >= Chesse.size_board || destination.getY() >= Chesse.size_board) {
                 continue;
             }
             //System.out.println(direction + ": " + result); //print all possible moves
-            validMoves.add(result);
+            Move move = new Move(startHorse, destination);
+            validMoves.add(move);
         }
     }
 }

@@ -13,27 +13,27 @@ public class Chesse {
 
     static int size_board = 6;
     static int finalMoves = (size_board * size_board) - 1;
-    public static List<Moves.ResultPair> moveHistory = new ArrayList<>();
+    public static List<Moves.Move> moveHistory = new ArrayList<>();
     public static int countOfMoves = 0;
 
     public void init() {
-        Map<String, int[]> board = new HashMap<>();
+        Map<String, Moves.Field> board = new HashMap<>();
         for (int i = 0; i < size_board; i++) {
             for (int j = 0; j < size_board; j++) {
                 String key = "(" + i + "," + j + ")";
-                board.put(key, new int[]{i, j});
+                board.put(key, new Moves.Field(i, j));
             }
         }
 
-        int[] start_horse = board.get("(0,0)");
+        Moves.Field start_horse = board.get("(0,0)");
         Moves.AllPossibleMoves(start_horse);
     }
 
     //--------------------------------------------------------------------------------
 
 
-    public static Moves.ResultPair choosePossibleMove(){
-        for (Moves.ResultPair move : Moves.validMoves){
+    public static Moves.Move choosePossibleMove(){
+        for (Moves.Move move : Moves.validMoves){
             if (!moveHistory.contains(move)){
                 /*Moves.ResultPair horsePosition = Moves.validMoves.removeFirst();
                 return horsePosition;*/
@@ -46,7 +46,7 @@ public class Chesse {
     public void run() {
 
         while (countOfMoves < finalMoves && !Moves.validMoves.isEmpty()) {
-            Moves.ResultPair move = choosePossibleMove();
+            Moves.Move move = choosePossibleMove();
             if (move == null){
                 break;
             }
@@ -56,7 +56,7 @@ public class Chesse {
 
             System.out.println("Move : " + move);
             System.out.println("ount : " + countOfMoves);
-            Moves.AllPossibleMoves(new int[]{move.getX(), move.getY()});
+            Moves.AllPossibleMoves(move.getDestField());
         }
     }
 
