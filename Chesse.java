@@ -17,7 +17,7 @@ public class Chesse {
     static int size_board = 6;
     static int finalMoves = (size_board * size_board) - 1;
     public static List<Moves.Move> moveHistory = new ArrayList<>();
-    public static Set<String> visitedPositions = new HashSet<String>();
+    public static Set<String> visitedPositions = new HashSet<>();
     public static Map<String, List<Moves.Move>> movesMap = new HashMap<>();
     public static int countOfMoves = 0;
 
@@ -35,11 +35,10 @@ public class Chesse {
         Moves.Field start_horse = board.get("(0,0)");
         visitedPositions.add("(0,0)");
         List<Moves.Move> initialMoves = Moves.AllPossibleMoves(start_horse);
-        movesMap.put("(0,0)", initialMoves); // Store valid moves for the starting position
+        movesMap.put("(0,0)", initialMoves); // valid moves for the starting position
     }
 
     //---choosePossibleMove-----------------------------------------------------------
-
 
     public Moves.Move choosePossibleMove(String position) {
         List<Moves.Move> validMoves = movesMap.get(position);
@@ -76,7 +75,6 @@ public class Chesse {
             List<Moves.Move>  nextMoves = Moves.AllPossibleMoves(move.getDestField());
             movesMap.put(newPosition, nextMoves);
             currentPosition = newPosition;
-            // Moves.AllPossibleMoves(move.getDestField());
 
             if (countOfMoves < finalMoves && nextMoves.isEmpty()) {
                 visitedPositions.remove(newPosition);
