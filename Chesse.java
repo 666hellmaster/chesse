@@ -17,7 +17,8 @@ public class Chesse {
     static int size_board = 6;
     static int finalMoves = (size_board * size_board) - 1;
     public static List<Moves.Move> moveHistory = new ArrayList<>();
-    public static Set<Moves.Move> visitedPositions = new HashSet<>();
+    public static Set<String> visitedPositions = new HashSet<String>();
+    public static Map<String, List<Moves.Move>> movesMap = new HashMap<>();
     public static int countOfMoves = 0;
 
     //---init-------------------------------------------------------------------------
@@ -32,16 +33,22 @@ public class Chesse {
         }
 
         Moves.Field start_horse = board.get("(0,0)");
-        Moves.AllPossibleMoves(start_horse);
+        visitedPositions.add("(0,0)");
+        List<Moves.Move> initialMoves = Moves.AllPossibleMoves(start_horse);
+        movesMap.put("(0,0)", initialMoves); // Store valid moves for the starting position
     }
 
     //---choosePossibleMove-----------------------------------------------------------
 
 
-    public Moves.Move choosePossibleMove() {
-        for (Moves.Move move : Moves.validMoves) {
-            if (!moveHistory.contains(move)) {
-                return move;
+    public Moves.Move choosePossibleMove(String position) {
+        List<Moves.Move> validMoves = movesMap.get(position);
+        if (validMoves != null) {
+            for (Moves.Move move : validMoves) {
+                String destPosition = "(" + move.getDestField().getX() + "," + move.getDestField().getY() + ")";
+                if (!visitedPositions.contains(destPosition)) {
+                    return move;
+                }
             }
         }
         return null;
@@ -50,26 +57,32 @@ public class Chesse {
     //---run--------------------------------------------------------------------------
 
     public void run() {
+        String currentPosition = "(0,0)";
 
-        while (countOfMoves < finalMoves && !Moves.validMoves.isEmpty()) {
-            Moves.Move move = choosePossibleMove();
+        while (countOfMoves < finalMoves && !movesMap.get(currentPosition).isEmpty()) {
+            Moves.Move move = choosePossibleMove(currentPosition);
             if (move == null) {
                 break;
             }
 
             moveHistory.add(move);
-            visitedPositions.add(move);
+            String newPosition = "(" + move.getDestField().getX() + "," + move.getDestField().getY() + ")";
+            visitedPositions.add(newPosition);
             countOfMoves++;
 
             System.out.println("Move : " + move);
             System.out.println("ount : " + countOfMoves);
-            Moves.AllPossibleMoves(move.getDestField());
 
-            if (countOfMoves < finalMoves && Moves.validMoves.isEmpty()) {
-                visitedPositions.remove(move);
+            List<Moves.Move>  nextMoves = Moves.AllPossibleMoves(move.getDestField());
+            movesMap.put(newPosition, nextMoves);
+            currentPosition = newPosition;
+            // Moves.AllPossibleMoves(move.getDestField());
+
+            if (countOfMoves < finalMoves && nextMoves.isEmpty()) {
+                visitedPositions.remove(newPosition);
                 moveHistory.remove(move);
                 countOfMoves--;
-                Moves.AllPossibleMoves(move.getSourceField());
+                currentPosition = "(" + move.getSourceField().getX() + "," + move.getSourceField().getY() + ")"; // Revert to the previous position
             }
         }
     }

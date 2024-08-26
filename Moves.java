@@ -118,7 +118,7 @@ public class Moves {
 
     public static List<Move> validMoves = new ArrayList<>();
 
-    public static void AllPossibleMoves(Field startHorse) {
+    public static List<Move> AllPossibleMoves(Field startHorse) {
         validMoves.clear();
         for (Direction direction : Direction.values()) {
             Field destination = direction.apply(startHorse);
@@ -128,5 +128,6 @@ public class Moves {
             Move move = new Move(startHorse, destination);
             validMoves.add(move);
         }
+        return new ArrayList<>(validMoves);
     }
 }
