@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 /**
  * @author ruzicka
  * @since 2024-08-22
@@ -16,6 +17,7 @@ public class Chesse {
     static int size_board = 6;
     static int finalMoves = (size_board * size_board) - 1;
     public static List<Moves.Move> moveHistory = new ArrayList<>();
+    public static Set<Moves.Move> visitedPositions = new HashSet<>();
     public static int countOfMoves = 0;
 
     //---init-------------------------------------------------------------------------
@@ -36,10 +38,10 @@ public class Chesse {
     //---choosePossibleMove-----------------------------------------------------------
 
 
-    public static Moves.Move choosePossibleMove(){
-        for (Moves.Move move : Moves.validMoves){
-            if (!moveHistory.contains(move)){
-               return move;
+    public Moves.Move choosePossibleMove() {
+        for (Moves.Move move : Moves.validMoves) {
+            if (!moveHistory.contains(move)) {
+                return move;
             }
         }
         return null;
@@ -51,16 +53,24 @@ public class Chesse {
 
         while (countOfMoves < finalMoves && !Moves.validMoves.isEmpty()) {
             Moves.Move move = choosePossibleMove();
-            if (move == null){
+            if (move == null) {
                 break;
             }
 
             moveHistory.add(move);
+            visitedPositions.add(move);
             countOfMoves++;
 
             System.out.println("Move : " + move);
             System.out.println("ount : " + countOfMoves);
             Moves.AllPossibleMoves(move.getDestField());
+
+            if (countOfMoves < finalMoves && Moves.validMoves.isEmpty()) {
+                visitedPositions.remove(move);
+                moveHistory.remove(move);
+                countOfMoves--;
+                Moves.AllPossibleMoves(move.getSourceField());
+            }
         }
     }
 

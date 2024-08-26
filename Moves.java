@@ -119,7 +119,7 @@ public class Moves {
     public static List<Move> validMoves = new ArrayList<>();
 
     public static void AllPossibleMoves(Field startHorse) {
-        validMoves.clear(); //clear all previous moves
+        validMoves.clear();
         for (Direction direction : Direction.values()) {
             Field destination = direction.apply(startHorse);
             if (destination.getX() < 0 || destination.getY() < 0 || destination.getX() >= Chesse.size_board || destination.getY() >= Chesse.size_board) {
