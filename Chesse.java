@@ -11,10 +11,14 @@ import java.util.Set;
  */
 public class Chesse {
 
+    //--------------------------------------------------------------------------------
+
     static int size_board = 6;
     static int finalMoves = (size_board * size_board) - 1;
     public static List<Moves.Move> moveHistory = new ArrayList<>();
     public static int countOfMoves = 0;
+
+    //---init-------------------------------------------------------------------------
 
     public void init() {
         Map<String, Moves.Field> board = new HashMap<>();
@@ -29,19 +33,19 @@ public class Chesse {
         Moves.AllPossibleMoves(start_horse);
     }
 
-    //--------------------------------------------------------------------------------
+    //---choosePossibleMove-----------------------------------------------------------
 
 
     public static Moves.Move choosePossibleMove(){
         for (Moves.Move move : Moves.validMoves){
             if (!moveHistory.contains(move)){
-                /*Moves.ResultPair horsePosition = Moves.validMoves.removeFirst();
-                return horsePosition;*/
                return move;
             }
         }
         return null;
     }
+
+    //---run--------------------------------------------------------------------------
 
     public void run() {
 
@@ -60,7 +64,7 @@ public class Chesse {
         }
     }
 
-    //--------------------------------------------------------------------------------
+    //---main-------------------------------------------------------------------------
 
     public static void main(String[] args) {
         Chesse chesse = new Chesse();

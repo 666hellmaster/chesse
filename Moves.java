@@ -6,7 +6,7 @@ import java.util.List;
  * @since 2024-08-22
  */
 public class Moves {
-    //--------------------------------------------------------------------------------
+    //---Field------------------------------------------------------------------------
 
     public static class Field {
         private final int x;
@@ -31,7 +31,7 @@ public class Moves {
         }
     }
 
-    //--------------------------------------------------------------------------------
+    //---Move-------------------------------------------------------------------------
 
     public static class Move {
         private final Field sourceField;
@@ -59,7 +59,7 @@ public class Moves {
         }
     }
 
-    //--------------------------------------------------------------------------------
+    //---Direction--------------------------------------------------------------------
 
     public enum Direction {
         UP_LEFT {
@@ -114,7 +114,7 @@ public class Moves {
         public abstract Field apply(Field field);
     }
 
-    //--------------------------------------------------------------------------------
+    //---AllPossibleMoves-------------------------------------------------------------
 
     public static List<Move> validMoves = new ArrayList<>();
 
@@ -125,7 +125,6 @@ public class Moves {
             if (destination.getX() < 0 || destination.getY() < 0 || destination.getX() >= Chesse.size_board || destination.getY() >= Chesse.size_board) {
                 continue;
             }
-            //System.out.println(direction + ": " + result); //print all possible moves
             Move move = new Move(startHorse, destination);
             validMoves.add(move);
         }
