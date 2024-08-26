@@ -16,7 +16,7 @@ public class Chesse {
 
     static int size_board = 6;
     static int finalMoves = (size_board * size_board) - 1;
-    public static List<Moves.Move> moveHistory = new ArrayList<>();
+    //public static List<Moves.Move> moveHistory = new ArrayList<>();
     public static Set<String> visitedPositions = new HashSet<>();
     public static Map<String, List<Moves.Move>> movesMap = new HashMap<>();
     public static int countOfMoves = 0;
@@ -58,13 +58,13 @@ public class Chesse {
     public void run() {
         String currentPosition = "(0,0)";
 
-        while (countOfMoves < finalMoves && !movesMap.get(currentPosition).isEmpty()) {
+        while (countOfMoves < finalMoves){  // && !movesMap.get(currentPosition).isEmpty(){
             Moves.Move move = choosePossibleMove(currentPosition);
             if (move == null) {
                 break;
             }
 
-            moveHistory.add(move);
+           // moveHistory.add(move);
             String newPosition = "(" + move.getDestField().getX() + "," + move.getDestField().getY() + ")";
             visitedPositions.add(newPosition);
             countOfMoves++;
@@ -78,7 +78,7 @@ public class Chesse {
 
             if (countOfMoves < finalMoves && nextMoves.isEmpty()) {
                 visitedPositions.remove(newPosition);
-                moveHistory.remove(move);
+                //moveHistory.remove(move);
                 countOfMoves--;
                 currentPosition = "(" + move.getSourceField().getX() + "," + move.getSourceField().getY() + ")"; // Revert to the previous position
             }
