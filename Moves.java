@@ -125,11 +125,11 @@ public class Moves {
             if (destination.getX() < 0 || destination.getY() < 0 || destination.getX() >= Chesse.size_board || destination.getY() >= Chesse.size_board) {
                 continue;
             }
-        //TODO: pokud jenom uy mista kde byl vratit prazdny
-          /*  if (Chesse.visitedPositions.contains(destination)) {
-               // return ;
-
-            }*/
+        //TODO: pokud jenom uz mista kde byl: vratit prazdny
+            String destPosition = "(" + destination.getX() + "," + destination.getY() + ")";
+            if (Chesse.visitedPositions.contains(destPosition)) {
+                continue;
+            }
             Move move = new Move(startHorse, destination);
             validMoves.add(move);
         }
