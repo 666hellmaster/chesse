@@ -16,7 +16,6 @@ public class Chesse {
 
     static int size_board = 6;
     static int finalMoves = (size_board * size_board) - 1;
-    //public static List<Moves.Move> moveHistory = new ArrayList<>();
     public static Set<String> visitedPositions = new HashSet<>();
     public static Map<String, List<Moves.Move>> movesMap = new HashMap<>();
     public static int countOfMoves = 0;
@@ -78,9 +77,11 @@ public class Chesse {
 
             if (countOfMoves < finalMoves && nextMoves.isEmpty()) {
                 visitedPositions.remove(newPosition);
-                //moveHistory.remove(move);
                 countOfMoves--;
                 currentPosition = "(" + move.getSourceField().getX() + "," + move.getSourceField().getY() + ")"; // Revert to the previous position
+              //if it is move i alreday visited go back more
+                nextMoves = movesMap.get(currentPosition);
+                nextMoves.remove(move);
             }
         }
     }
