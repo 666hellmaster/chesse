@@ -8,7 +8,7 @@ import java.util.List;
 public class Moves {
     //---Field------------------------------------------------------------------------
 
-    public static class Field {
+    public static class Field { // field on the board
         private final int x;
         private final int y;
 
@@ -33,7 +33,7 @@ public class Moves {
 
     //---Move-------------------------------------------------------------------------
 
-    public static class Move {
+    public static class Move { // move from source to destination
         private final Field sourceField;
         private final Field destField;
 
@@ -59,9 +59,9 @@ public class Moves {
         }
     }
 
-    //---Direction--------------------------------------------------------------------
+    //---Directions-------------------------------------------------------------------
 
-    public enum Direction {
+    public enum Direction { // all possible moves for the horse (without constraints)
         UP_LEFT {
             @Override
             public Field apply(Field field) {
@@ -116,8 +116,7 @@ public class Moves {
 
     //---AllPossibleMoves-------------------------------------------------------------
 
-
-    public static List<Move> AllPossibleMoves(Field startHorse) {
+    public static List<Move> AllPossibleMoves(Field startHorse) { // checking all possible moves for the horse (with constraints (board size and visited positions))
         List<Move> validMoves = new ArrayList<>();
         for (Direction direction : Direction.values()) {
             Field destination = direction.apply(startHorse);

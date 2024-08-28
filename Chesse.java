@@ -14,16 +14,17 @@ public class Chesse {
 
     //--------------------------------------------------------------------------------
 
-    static int size_board = 6;
+    static int size_board = 6; //change for different board sizes. it is n x n  (sizes under 5 have no solution)
     static int finalMoves = (size_board * size_board) - 1;
     public static Set<String> visitedPositions = new HashSet<>();
     public static Map<String, List<Moves.Move>> movesMap = new HashMap<>();
     public static int countOfMoves = 0;
-    public Stack<String> stack = new Stack<>();
+    public Stack<String> stack = new Stack<>(); // stack of visited positions
+    public String start = "(0,0)"; // starting position for the horse
 
     //---init-------------------------------------------------------------------------
 
-    public void init() {
+    public void init() { // initialize the board and the starting position of the horse
         Map<String, Moves.Field> board = new HashMap<>();
         for (int i = 0; i < size_board; i++) {
             for (int j = 0; j < size_board; j++) {
@@ -32,10 +33,9 @@ public class Chesse {
             }
         }
 
-        String start = "(0,0)";
         Moves.Field start_horse = board.get(start);
         visitedPositions.add(start);
-        stack.push(start);
+        stack.push(start); // push the starting position to the stack
         List<Moves.Move> initialMoves = Moves.AllPossibleMoves(start_horse);
         movesMap.put(start, initialMoves); // valid moves for the starting position
     }
@@ -47,26 +47,18 @@ public class Chesse {
         if (validMoves != null && !validMoves.isEmpty()) {
                     return validMoves.get(0);
             }
-           /*
-            for (Moves.Move move : validMoves) {
-                String destPosition = "(" + move.getDestField().getX() + "," + move.getDestField().getY() + ")";
-                if (!visitedPositions.contains(destPosition)) {
-                    return move;
-                }
-            }*/
         return null;
     }
 
     //---run--------------------------------------------------------------------------
 
     public void run() {
-        String currentPosition = "(0,0)";
-
-        while (countOfMoves < finalMoves){  // && !movesMap.get(currentPosition).isEmpty(){
+        String currentPosition = stack.peek();
+        while (countOfMoves < finalMoves){ // while the horse has not visited all the fields
             Moves.Move move = choosePossibleMove(currentPosition);
-            if (move == null) {
+            if (move == null) { // if there are no more valid moves (dead end)
                 backtrack();
-                if (stack.isEmpty()) {
+                if (stack.isEmpty()) { // if the horse has visited all the fields and there are no more moves
                     break;
                 }
                 currentPosition = stack.peek();
@@ -78,37 +70,34 @@ public class Chesse {
             stack.push(newPosition);
             countOfMoves++;
 
-            System.out.println("Move : " + move);
-            System.out.println("Count : " + countOfMoves);
-            System.out.println("Stack : " + stack);
+            //uncomment for printing out the progress
+            // System.out.println("Move : " + move); // move from the current position to the destination
+            // System.out.println("Count : " + countOfMoves); // number of moves
+            // System.out.println("Stack : " + stack); //the path of the horse
 
             List<Moves.Move>  nextMoves = Moves.AllPossibleMoves(move.getDestField());
             movesMap.put(newPosition, nextMoves);
             currentPosition = newPosition;
+        }
 
-            /*
-            if (countOfMoves < finalMoves && nextMoves.isEmpty()) {
-                visitedPositions.remove(newPosition);
-                countOfMoves--;
-                currentPosition = "(" + move.getSourceField().getX() + "," + move.getSourceField().getY() + ")"; // Revert to the previous position
-                nextMoves = movesMap.get(currentPosition);
-                nextMoves.remove(move);
-                stack.pop();
-            }
-            */
+        if (countOfMoves == finalMoves) {
+            System.out.println("The horse has visited all the fields.");
+            System.out.println("Stack : " + stack); //prints the path of the horse
+        } else {
+            System.out.println("There is no valid solution (maybe try differernt board size).");
         }
     }
 
     //---backtrack--------------------------------------------------------------------
 
-    public void backtrack(){
+    public void backtrack(){ // backtracking using stack of used moves
        if (!stack.isEmpty()) {
               String lastPosition = stack.pop();
               visitedPositions.remove(lastPosition);
               countOfMoves--;
               if (!stack.isEmpty()) {
-                  String previosPosition = stack.peek();
-                  movesMap.get(previosPosition).remove(choosePossibleMove(previosPosition));
+                  String previousPosition = stack.peek();
+                  movesMap.get(previousPosition).remove(choosePossibleMove(previousPosition));
               }
        }
     }
