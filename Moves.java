@@ -116,10 +116,9 @@ public class Moves {
 
     //---AllPossibleMoves-------------------------------------------------------------
 
-    public static List<Move> validMoves = new ArrayList<>();
 
     public static List<Move> AllPossibleMoves(Field startHorse) {
-        validMoves.clear();
+        List<Move> validMoves = new ArrayList<>();
         for (Direction direction : Direction.values()) {
             Field destination = direction.apply(startHorse);
             if (destination.getX() < 0 || destination.getY() < 0 || destination.getX() >= Chesse.size_board || destination.getY() >= Chesse.size_board) {
@@ -132,6 +131,6 @@ public class Moves {
             Move move = new Move(startHorse, destination);
             validMoves.add(move);
         }
-        return new ArrayList<>(validMoves);
+        return validMoves;
     }
 }

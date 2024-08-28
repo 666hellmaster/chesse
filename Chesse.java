@@ -44,14 +44,16 @@ public class Chesse {
 
     public Moves.Move choosePossibleMove(String position) {
         List<Moves.Move> validMoves = movesMap.get(position);
-        if (validMoves != null) {
+        if (validMoves != null && !validMoves.isEmpty()) {
+                    return validMoves.get(0);
+            }
+           /*
             for (Moves.Move move : validMoves) {
                 String destPosition = "(" + move.getDestField().getX() + "," + move.getDestField().getY() + ")";
                 if (!visitedPositions.contains(destPosition)) {
                     return move;
                 }
-            }
-        }
+            }*/
         return null;
     }
 
@@ -104,6 +106,10 @@ public class Chesse {
               String lastPosition = stack.pop();
               visitedPositions.remove(lastPosition);
               countOfMoves--;
+              if (!stack.isEmpty()) {
+                  String previosPosition = stack.peek();
+                  movesMap.get(previosPosition).remove(choosePossibleMove(previosPosition));
+              }
        }
     }
 
