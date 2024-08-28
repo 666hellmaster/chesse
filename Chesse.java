@@ -1,9 +1,9 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 
 /**
@@ -19,6 +19,7 @@ public class Chesse {
     public static Set<String> visitedPositions = new HashSet<>();
     public static Map<String, List<Moves.Move>> movesMap = new HashMap<>();
     public static int countOfMoves = 0;
+    public Stack<String> stack = new Stack<>();
 
     //---init-------------------------------------------------------------------------
 
@@ -31,10 +32,12 @@ public class Chesse {
             }
         }
 
-        Moves.Field start_horse = board.get("(0,0)");
-        visitedPositions.add("(0,0)");
+        String start = "(0,0)";
+        Moves.Field start_horse = board.get(start);
+        visitedPositions.add(start);
+        stack.push(start);
         List<Moves.Move> initialMoves = Moves.AllPossibleMoves(start_horse);
-        movesMap.put("(0,0)", initialMoves); // valid moves for the starting position
+        movesMap.put(start, initialMoves); // valid moves for the starting position
     }
 
     //---choosePossibleMove-----------------------------------------------------------
@@ -60,30 +63,48 @@ public class Chesse {
         while (countOfMoves < finalMoves){  // && !movesMap.get(currentPosition).isEmpty(){
             Moves.Move move = choosePossibleMove(currentPosition);
             if (move == null) {
-                break;
+                backtrack();
+                if (stack.isEmpty()) {
+                    break;
+                }
+                currentPosition = stack.peek();
+                continue;
             }
 
-           // moveHistory.add(move);
             String newPosition = "(" + move.getDestField().getX() + "," + move.getDestField().getY() + ")";
             visitedPositions.add(newPosition);
+            stack.push(newPosition);
             countOfMoves++;
 
             System.out.println("Move : " + move);
-            System.out.println("ount : " + countOfMoves);
+            System.out.println("Count : " + countOfMoves);
+            System.out.println("Stack : " + stack);
 
             List<Moves.Move>  nextMoves = Moves.AllPossibleMoves(move.getDestField());
             movesMap.put(newPosition, nextMoves);
             currentPosition = newPosition;
 
+            /*
             if (countOfMoves < finalMoves && nextMoves.isEmpty()) {
                 visitedPositions.remove(newPosition);
                 countOfMoves--;
                 currentPosition = "(" + move.getSourceField().getX() + "," + move.getSourceField().getY() + ")"; // Revert to the previous position
-              //if it is move i alreday visited go back more
                 nextMoves = movesMap.get(currentPosition);
                 nextMoves.remove(move);
+                stack.pop();
             }
+            */
         }
+    }
+
+    //---backtrack--------------------------------------------------------------------
+
+    public void backtrack(){
+       if (!stack.isEmpty()) {
+              String lastPosition = stack.pop();
+              visitedPositions.remove(lastPosition);
+              countOfMoves--;
+       }
     }
 
     //---main-------------------------------------------------------------------------
